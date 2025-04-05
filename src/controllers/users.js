@@ -1,4 +1,4 @@
-import supabase from "../config/test.js";
+import supabase from "../config/supabaseConfig.js";
 
 const createUser = async (req, res) => {
   const { username, email, password, role_id } = req.body;

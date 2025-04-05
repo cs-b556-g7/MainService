@@ -1,4 +1,4 @@
-import supabase from "../config/test.js";
+import supabase from "../config/supabaseConfig.js";
 
 const createEvent = async (req, res) => {
   const event = req.body;
