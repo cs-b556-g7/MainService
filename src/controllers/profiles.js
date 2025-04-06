@@ -1,4 +1,4 @@
-import supabase from "../config/supabaseConfig.js";
+import supabase from "../../config/supabaseConfig.js";
 
 const createProfile = async (req, res) => {
   const profile = req.body;
