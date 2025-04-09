@@ -16,9 +16,11 @@ import profileRoutes from "./routes/profiles.js";
 import venueRoutes from "./routes/venues.js";
 import eventRoutes from "./routes/events.js"
 import venueSportRoutes from "./routes/venue_sports.js"
+import paymentRoutes from "./routes/payments.js";
 
 // Route usage
 
+app.use("/api/payments", paymentRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/profiles", profileRoutes);
 app.use("/api/venues", venueRoutes);
