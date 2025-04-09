@@ -4,8 +4,17 @@ const createVenueSport = async (req, res) => {
   const item = req.body;
   const { data, error } = await supabase.from("venue_sports").insert([item]);
   if (error) return res.status(400).json({ error });
-  res.status(201).json(data);
+  res.status(201).json({ message: "Sport added to venue successfully", data });
 };
+
+const updateVenueSport = async (req, res) => {
+  const { id } = req.params;
+  const updated = req.body;
+  const { data, error } = await supabase.from("venue_sports").update(updated).eq("id", id);
+  if (error) return res.status(400).json({ error });
+  res.json({ message: "Venue sport updated successfully", data });
+};
+
 
 const getAllVenueSports = async (req, res) => {
   const { data, error } = await supabase.from("venue_sports").select("*");
@@ -17,14 +26,6 @@ const getVenueSportById = async (req, res) => {
   const { id } = req.params;
   const { data, error } = await supabase.from("venue_sports").select("*").eq("id", id).single();
   if (error) return res.status(404).json({ error });
-  res.json(data);
-};
-
-const updateVenueSport = async (req, res) => {
-  const { id } = req.params;
-  const updated = req.body;
-  const { data, error } = await supabase.from("venue_sports").update(updated).eq("id", id);
-  if (error) return res.status(400).json({ error });
   res.json(data);
 };
 
