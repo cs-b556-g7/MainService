@@ -1,6 +1,6 @@
 import supabase from "../config/supabaseConfig.js";
 
-const createVenueSport = async (req, res) => {
+export const createVenueSport = async (req, res) => {
   const { venue_id } = req.params;
   const item = { ...req.body, venue_id: parseInt(venue_id) };
   const { data, error } = await supabase.from("venue_sports").insert([item]);
@@ -9,7 +9,7 @@ const createVenueSport = async (req, res) => {
   res.status(201).json({ message: "Sport added to venue successfully", data });
 };
 
-const updateVenueSport = async (req, res) => {
+export const updateVenueSport = async (req, res) => {
   const { venue_id, id } = req.params;
   const updated = { ...req.body, venue_id: parseInt(venue_id) };
   const { data, error } = await supabase
@@ -22,7 +22,7 @@ const updateVenueSport = async (req, res) => {
   res.json({ message: "Venue sport updated successfully", data });
 };
 
-const getVenueSportsByVenueId = async (req, res) => {
+export const getVenueSportsByVenueId = async (req, res) => {
   const { venue_id } = req.params;
   const { data, error } = await supabase
     .from("venue_sports")
@@ -33,17 +33,10 @@ const getVenueSportsByVenueId = async (req, res) => {
   res.json(data);
 };
 
-const deleteVenueSportsByVenueId = async (req, res) => {
+export const deleteVenueSportsByVenueId = async (req, res) => {
   const { venue_id } = req.params;
   const { error } = await supabase.from("venue_sports").delete().eq("venue_id", venue_id);
 
   if (error) return res.status(400).json({ error });
   res.json({ message: `All sports deleted for venue ${venue_id}` });
-};
-
-export default {
-  createVenueSport,
-  updateVenueSport,
-  getVenueSportsByVenueId,
-  deleteVenueSportsByVenueId
 };
