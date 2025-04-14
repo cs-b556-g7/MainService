@@ -15,7 +15,7 @@ import userRoutes from "./routes/users.js";
 import profileRoutes from "./routes/profiles.js";
 import venueRoutes from "./routes/venues.js";
 import eventRoutes from "./routes/events.js"
-import venueSportRoutes from "./routes/venue_sports.js"
+import venueSportRoutes from "./routes/venueSports.js"
 import paymentRoutes from "./routes/payments.js";
 import venueBookingsRoutes from "./routes/venueBookings.js";
 import eventBookingsRoutes from "./routes/eventsBookings.js";
