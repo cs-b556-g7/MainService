@@ -215,6 +215,70 @@ const getConversationMessages = async (req, res) => {
 
 // http://localhost:3000/api/conversations/2/messages GET
 
+const getLastMessage = async (req, res) => {
+  const { conversationId } = req.params;
+
+  const { data, error } = await supabase
+    .from('messages')
+    .select('content')
+    .eq('conversation_id', conversationId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .single();
+
+  if (error) return res.status(400).json({ error });
+
+  res.json(data);
+};
+
+//  http://localhost:3000/api/conversations/:conversationId/messages/last GET
+
+const findConversationId = async (req, res) => {
+  const { userId1, userId2 } = req.query;
+
+  try {
+    // Find all conversation IDs for userId1
+    const { data: user1Conversations, error: user1Error } = await supabase
+      .from('conversation_participants')
+      .select('conversation_id')
+      .eq('user_id', userId1);
+
+    if (user1Error) {
+      console.error('Error fetching conversations for userId1:', user1Error);
+      return res.status(400).json({ error: 'Error fetching conversations for userId1' });
+    }
+
+    // Find all conversation IDs for userId2
+    const { data: user2Conversations, error: user2Error } = await supabase
+      .from('conversation_participants')
+      .select('conversation_id')
+      .eq('user_id', userId2);
+
+    if (user2Error) {
+      console.error('Error fetching conversations for userId2:', user2Error);
+      return res.status(400).json({ error: 'Error fetching conversations for userId2' });
+    }
+
+    // Find the common conversation ID between the two users
+    const user1ConversationIds = user1Conversations.map((c) => c.conversation_id);
+    const user2ConversationIds = user2Conversations.map((c) => c.conversation_id);
+    const commonConversationId = user1ConversationIds.find((id) =>
+      user2ConversationIds.includes(id)
+    );
+
+    if (!commonConversationId) {
+      return res.status(404).json({ error: 'No conversation found for these participants' });
+    }
+
+    res.status(200).json({ conversationId: commonConversationId });
+  } catch (err) {
+    console.error('Error finding conversation ID:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// http://localhost:3000/api/conversations/find?userId1=1&userId2=2 GET
+
 // Mark messages as read
 const markMessagesAsRead = async (req, res) => {
   const { conversationId } = req.params;
@@ -240,5 +304,7 @@ export default {
   sendMessage,
   getUserConversations,
   getConversationMessages,
+  getLastMessage,
+  findConversationId,
   markMessagesAsRead,
 };

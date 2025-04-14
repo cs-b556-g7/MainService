@@ -9,6 +9,8 @@ router.post("/:conversationId/participants", ctrl.addParticipants); // Add parti
 router.post("/:conversationId/messages", ctrl.sendMessage); // Send a message
 router.get("/user/:userId", ctrl.getUserConversations); // Get all conversations for a user
 router.get("/:conversationId/messages", ctrl.getConversationMessages); // Get messages for a conversation
+router.get("/:conversationId/messages/last", ctrl.getLastMessage); // Get the last message in a conversation
+router.get("/find", ctrl.findConversationId); // Find conversation ID by user IDs
 router.put("/:conversationId/messages/read", ctrl.markMessagesAsRead); // Mark messages as read
 
 export default router;
