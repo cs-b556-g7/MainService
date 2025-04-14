@@ -7,8 +7,7 @@ dotenv.config({ path: "./.env" });
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middlewares
-app.use(express.json());
+
 
 // Route imports (correct relative paths)
 import userRoutes from "./routes/users.js";
@@ -27,6 +26,10 @@ import participantRoutes from "./routes/participants.js";
 // Route usage
 
 app.use("/api/payments", paymentRoutes);
+
+
+// Middlewares
+app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/profiles", profileRoutes);
 app.use("/api/venues", venueRoutes);
