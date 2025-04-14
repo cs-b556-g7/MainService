@@ -22,14 +22,17 @@ import venueOwnerStatsRoutes from "./routes/venueOwnerStats.js";
 import conversationRoutes from "./routes/conversations.js";
 import messageRoutes from "./routes/messages.js";
 import participantRoutes from "./routes/participants.js";
+import paymentWebhookRoutes from "./routes/paymentWebhook.js";
 
-// Route usage
 
-app.use("/api/payments", paymentRoutes);
 
+app.use("/api/paymentWebhook", paymentWebhookRoutes);
 
 // Middlewares
 app.use(express.json());
+
+
+app.use("/api/payments", paymentRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/profiles", profileRoutes);
 app.use("/api/venues", venueRoutes);
