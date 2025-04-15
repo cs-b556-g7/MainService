@@ -11,7 +11,7 @@ export const createEventBooking = async (req, res) => {
 export const updateEventBooking = async (req, res) => {
   const { id } = req.params;
   const updated = req.body;
-  const { data, error } = await supabase.from("event_bookings").update(updated).eq("id", id);
+  const { data, error } = await supabase.from("event_bookings").update(updated).eq("event_id", id);
   if (error) return res.status(400).json({ error });
   res.json({ message: "Event booking updated", data });
 };

@@ -10,7 +10,7 @@ const createEvent = async (req, res) => {
 const updateEvent = async (req, res) => {
   const { id } = req.params;
   const updated = req.body;
-  const { data, error } = await supabase.from("events").update(updated).eq("id", id);
+  const { data, error } = await supabase.from("events").update(updated).eq("event_id", id);
   if (error) return res.status(400).json({ error });
   res.json({ message: "Event updated successfully", data });
 };

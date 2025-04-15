@@ -10,7 +10,7 @@ const createVenue = async (req, res) => {
 const updateVenue = async (req, res) => {
   const { id } = req.params;
   const updated = req.body;
-  const { data, error } = await supabase.from("venues").update(updated).eq("id", id);
+  const { data, error } = await supabase.from("venues").update(updated).eq("venue_id", id);
   if (error) return res.status(400).json({ error });
   res.json({ message: "Venue updated successfully", data });
 };

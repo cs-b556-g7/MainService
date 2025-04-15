@@ -24,7 +24,7 @@ const getAllProfiles = async (req, res) => {
 
 const getProfileById = async (req, res) => {
   const { id } = req.params;
-  const { data, error } = await supabase.from("profiles").select("*").eq("id", id).single();
+  const { data, error } = await supabase.from("profiles").select("*").eq("user_id", id).single();
   if (error) return res.status(404).json({ error });
   res.json(data);
 };
