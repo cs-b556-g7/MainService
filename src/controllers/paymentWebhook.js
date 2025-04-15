@@ -4,6 +4,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
+// Utility to replace "" with null
+const nullify = (value) => (value === "" ? null : value);
+
 export const handleStripeWebhook = async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
@@ -17,19 +20,19 @@ export const handleStripeWebhook = async (req, res) => {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-    const {
-      email,
-      user_id,
-      venue_id,
-      sport_id,
-      type,
-      ticketInfo,
-      date,
-      time,
-      owner_email
-    } = session.metadata;
+    const metadata = session.metadata;
 
-    console.log("Tewst"+JSON.stringify(session.metadata))
+    const email = nullify(metadata.email);
+    const user_id = nullify(metadata.user_id);
+    const venue_id = nullify(metadata.venue_id);
+    const sport_id = nullify(metadata.sport_id);
+    const type = nullify(metadata.type);
+    const ticketInfo = nullify(metadata.ticketInfo);
+    const date = nullify(metadata.date);
+    const time = nullify(metadata.time);
+    const owner_email = nullify(metadata.owner_email);
+
+    console.log("Tewst" + JSON.stringify(metadata));
 
     const parsedTicket = typeof ticketInfo === 'string' ? JSON.parse(ticketInfo) : ticketInfo;
     const totalAmount = session.amount_total / 100;
@@ -43,14 +46,14 @@ export const handleStripeWebhook = async (req, res) => {
             event_id: parseInt(venue_id),
             user_id: parseInt(user_id),
             user_email: email,
-            number_of_tickets: parseInt(parsedTicket.quantity || '1'),
+            number_of_tickets: parseInt(parsedTicket?.quantity || '1'),
             total_amount: totalAmount,
             status: 'confirmed',
             email_sent: true,
-            booking_date: new Date().toISOString()
+            booking_date: date
           })
         });
-        console.log("venue booked")
+        console.log("event booked");
       } else if (type === 'venue') {
         await fetch('https://gateway-service-latest-k8uc.onrender.com/main/api/venue-bookings', {
           method: 'POST',
@@ -60,7 +63,7 @@ export const handleStripeWebhook = async (req, res) => {
             sport_id: parseInt(sport_id),
             user_id: parseInt(user_id),
             user_email: email,
-            number_of_courts: parseInt(parsedTicket.courts || '1'),
+            number_of_courts: parseInt(parsedTicket?.courts || '1'),
             total_amount: totalAmount,
             booking_date: date,
             start_time: time,
@@ -69,7 +72,7 @@ export const handleStripeWebhook = async (req, res) => {
             email_sent: true
           })
         });
-        console.log("event booked")
+        console.log("venue booked");
       }
 
       await fetch('https://gateway-service-latest-k8uc.onrender.com/email/api/send-booking-emails', {
@@ -94,4 +97,3 @@ export const handleStripeWebhook = async (req, res) => {
 
   res.status(200).json({ received: true });
 };
-
