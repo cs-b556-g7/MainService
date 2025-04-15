@@ -10,7 +10,7 @@ export const createOwnerStats = async (req, res) => {
 export const updateOwnerStats = async (req, res) => {
   const { id } = req.params;
   const updated = req.body;
-  const { data, error } = await supabase.from("venue_owner_stats").update(updated).eq("id", id);
+  const { data, error } = await supabase.from("venue_owner_stats").update(updated).eq("user_id", id);
   if (error) return res.status(400).json({ error });
   res.json({ message: "Owner stats updated", data });
 };
@@ -23,7 +23,7 @@ export const getAllOwnerStats = async (req, res) => {
 
 export const getOwnerStatsById = async (req, res) => {
   const { id } = req.params;
-  const { data, error } = await supabase.from("venue_owner_stats").select("*").eq("id", id).single();
+  const { data, error } = await supabase.from("venue_owner_stats").select("*").eq("user_id", id).single();
   if (error) return res.status(404).json({ error });
   res.json(data);
 };

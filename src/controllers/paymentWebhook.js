@@ -21,6 +21,7 @@ export const handleStripeWebhook = async (req, res) => {
       email,
       user_id,
       venue_id,
+      sport_id,
       type,
       ticketInfo,
       date,
@@ -49,13 +50,14 @@ export const handleStripeWebhook = async (req, res) => {
             booking_date: new Date().toISOString()
           })
         });
+        console.log("venue booked")
       } else if (type === 'venue') {
         await fetch('https://gateway-service-latest-k8uc.onrender.com/main/api/venue-bookings', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             venue_id: parseInt(venue_id),
-            sport_id: 1, // Hardcoded for now
+            sport_id: parseInt(sport_id),
             user_id: parseInt(user_id),
             user_email: email,
             number_of_courts: parseInt(parsedTicket.courts || '1'),
@@ -67,6 +69,7 @@ export const handleStripeWebhook = async (req, res) => {
             email_sent: true
           })
         });
+        console.log("event booked")
       }
 
       await fetch('https://gateway-service-latest-k8uc.onrender.com/email/api/send-booking-emails', {
@@ -83,7 +86,7 @@ export const handleStripeWebhook = async (req, res) => {
         })
       });
 
-      console.log(`✅ ${type} booking and email handled`);
+      console.log(`  email sent`);
     } catch (err) {
       console.error('❌ Failed to save booking or send email:', err.message);
     }
