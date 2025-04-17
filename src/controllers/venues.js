@@ -2,15 +2,23 @@ import supabase from "../config/supabaseConfig.js";
 
 const createVenue = async (req, res) => {
   const venue = req.body;
-  const { data, error } = await supabase.from("venues").insert([venue]);
+
+  // ✅ Add `.select()` to get the inserted row
+  const { data, error } = await supabase.from("venues").insert([venue]).select();
+
   if (error) return res.status(400).json({ error });
-  res.status(201).json({ message: "Venue created successfully", data });
+
+  // ✅ Return the inserted venue object
+  res.status(201).json({ message: "Venue created successfully", data: data[0] });
 };
+
+
+
 
 const updateVenue = async (req, res) => {
   const { id } = req.params;
   const updated = req.body;
-  const { data, error } = await supabase.from("venues").update(updated).eq("venue_id", id);
+  const { data, error } = await supabase.from("venues").update(updated).eq("id", id);
   if (error) return res.status(400).json({ error });
   res.json({ message: "Venue updated successfully", data });
 };

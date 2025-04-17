@@ -47,7 +47,7 @@ export const handleStripeWebhook = async (req, res) => {
             user_id: parseInt(user_id),
             user_email: email,
             number_of_tickets: parseInt(parsedTicket?.quantity || '1'),
-            total_amount: totalAmount,
+            total_amount: parsedTicket?.total,
             status: 'confirmed',
             email_sent: true,
             booking_date: date
@@ -64,7 +64,7 @@ export const handleStripeWebhook = async (req, res) => {
             user_id: parseInt(user_id),
             user_email: email,
             number_of_courts: parseInt(parsedTicket?.courts || '1'),
-            total_amount: totalAmount,
+            total_amount: parsedTicket?.total,
             booking_date: date,
             start_time: time,
             end_time: time,
