@@ -39,7 +39,7 @@ export const handleStripeWebhook = async (req, res) => {
 
     try {
       if (type === 'event') {
-        await fetch('https://gateway-service-latest-k8uc.onrender.com/main/api/event-bookings', {
+        await fetch('https://gateway-service-latest-zbc3.onrender.com/main/api/event-bookings', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -55,7 +55,7 @@ export const handleStripeWebhook = async (req, res) => {
         });
         console.log("event booked");
       } else if (type === 'venue') {
-        await fetch('https://gateway-service-latest-k8uc.onrender.com/main/api/venue-bookings', {
+        await fetch('https://gateway-service-latest-zbc3.onrender.com/main/api/venue-bookings', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -75,7 +75,7 @@ export const handleStripeWebhook = async (req, res) => {
         console.log("venue booked");
       }
 
-      await fetch('https://gateway-service-latest-k8uc.onrender.com/email/api/send-booking-emails', {
+      await fetch('https://gateway-service-latest-zbc3.onrender.com/email/api/send-booking-emails', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
