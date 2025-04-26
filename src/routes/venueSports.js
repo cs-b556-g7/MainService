@@ -8,10 +8,16 @@ import {
 
 const router = express.Router();
 
-router.post("/venue/:venue_id", createVenueSport);
-router.put("/venue/:venue_id/:id", updateVenueSport);
-router.get("/venue/:venue_id", getVenueSportsByVenueId);
-router.delete("/venue/:venue_id", deleteVenueSportsByVenueId);
+// Create a new sport for a venue
+router.post("/:venue_id", createVenueSport);
+
+// Update a specific sport in a venue
+router.put("/:venue_id/sport/:id", updateVenueSport);
+
+// Get all sports for a venue
+router.get("/:venue_id", getVenueSportsByVenueId);
+
+// Delete all sports for a venue
+router.delete("/:venue_id", deleteVenueSportsByVenueId);
 
 export default router;
-
